@@ -1,0 +1,50 @@
+
+pipeline AirportPipeline {
+
+    // Input-Type: None -> Starting node 
+    // Output-Type: File -> Probably gives it implicitely to TextFileInterpreter, because TFI doesnt take any explicit parameters 
+    block AirportDataHttpExtractor oftype HttpExtractor{                
+        url: "https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-flughafen-weltweit/exports/csv?lang=en&timezone=Europe%2FBerlin&use_labels=true&delimiter=%3B";
+    }
+
+
+    block GetTextFile oftype TextFileInterpreter{}      //reads the csv file as text first because csv interpreter needs TextFile as Input
+                                                        // Input-Type: File 
+    block GetAsCSV oftype CSVInterpreter{
+        delimiter: ';';
+    }
+
+    // Now the actual work -> Interpreting CSV as a Table
+    block AirportTableInterpreter oftype TableInterpreter {
+        header: true;
+        columns: [
+            "Lfd. Nummer" oftype integer,
+            "Name des Flughafens" oftype text,
+            "Ort" oftype text,
+            "Land" oftype text,
+            "IATA" oftype text,
+            "ICAO" oftype text,
+            "Latitude" oftype decimal,
+            "Longitude" oftype decimal,
+            "Altitude" oftype integer
+            // "Zeitzone" ignored
+            // "DST" ignored
+            // "Zeitzonen-Datenbank" ignored
+            // "geo_punkt" ignored
+        ];
+    }
+
+    // Loads the created table into an SQLite database sink 
+    block AirportDbLoader oftype SQLiteLoader {
+        table: "airports";
+        file: "airports.sqlite";
+    }
+
+    // Composite Blocks -> Just the sequence in which the pipeline is executed 
+    AirportDataHttpExtractor
+        -> GetTextFile
+        -> GetAsCSV
+        -> AirportTableInterpreter
+        -> AirportDbLoader;
+
+}
