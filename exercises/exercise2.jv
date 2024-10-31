@@ -1,0 +1,60 @@
+valuetype ValidStadtteil oftype text {
+    constraints: [ StadtteilConstraint ]
+}
+
+constraint StadtteilConstraint oftype RegexConstraint {
+    regex: /^Vogelsang\b.*/;
+}
+
+valuetype IDType oftype text {
+    constraints: [ IDConstraint ]
+}
+
+constraint IDConstraint oftype RegexConstraint {
+    regex: /^\d{1,3}\.\d+,\s\d{1,3}\.\d+$/;
+}
+
+
+pipeline HerbstpflanzungPipeline {
+
+    // Input-Type: None -> Starting node 
+    // Output-Type: File -> Probably gives it implicitely to TextFileInterpreter, because TFI doesnt take any explicit parameters 
+    block HerbstpflanzungDataHttpExtractor oftype HttpExtractor{                
+        url: "https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/stadt-neuss-herbstpflanzung-2023/exports/csv";
+    }
+
+
+    block GetTextFile oftype TextFileInterpreter{}      //reads the csv file as text first because csv interpreter needs TextFile as Input
+                                                        // Input-Type: File 
+    block GetAsCSV oftype CSVInterpreter{
+        delimiter: ';';
+    }
+
+    // Now the actual work -> Interpreting CSV as a Table
+    block HerbstpflanzungTableInterpreter oftype TableInterpreter {
+    header: true;
+    columns: [
+        "lfd_nr" oftype integer,
+        "stadtteil" oftype ValidStadtteil,
+        "standort" oftype text,
+        "baumart_botanisch" oftype text,
+        // "baumart_deutsch" ignored
+        "id" oftype IDType,
+        "baumfamilie" oftype text
+    ];
+}
+
+    // Loads the created table into an SQLite database sink 
+    block HerbstpflanzungDbLoader oftype SQLiteLoader {
+        table: "trees";
+        file: "trees.sqlite";
+    }
+
+    // Composite Blocks -> Just the sequence in which the pipeline is executed 
+    HerbstpflanzungDataHttpExtractor
+        -> GetTextFile
+        -> GetAsCSV
+        -> HerbstpflanzungTableInterpreter
+        -> HerbstpflanzungDbLoader;
+
+}

@@ -1,0 +1,23 @@
+Found 1 pipelines to execute: AirportPipeline
+[AirportPipeline] Overview:
+	Blocks (5 blocks with 1 pipes):
+	 -> AirportDataHttpExtractor (HttpExtractor)
+		 -> GetTextFile (TextFileInterpreter)
+			 -> GetAsCSV (CSVInterpreter)
+				 -> AirportTableInterpreter (TableInterpreter)
+					 -> AirportDbLoader (SQLiteLoader)
+
+[INFO] Preparing feedback for EXERCISE 1:
+[INFO] If this exercise does not need to be submitted yet, you can ignore all output after this.
+	Looking for exercises/exercise1.jv to execute.
+	[SUCCESS] Found exercises/exercise1.jv, executing.
+	Looking for airports.sqlite to grade.
+	[SUCCESS] Found output file airports.sqlite, grading...
+
+Feedback for Exercise 1
+	Overall points 13 of 13
+	---
+	By category:
+		Shape: 4 of 4
+		Types: 9 of 9
+
