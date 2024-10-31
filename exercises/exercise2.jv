@@ -1,5 +1,5 @@
 valuetype ValidStadtteil oftype text {
-    constraints: [ StadtteilConstraint ]
+    constraints: [ StadtteilConstraint ];
 }
 
 constraint StadtteilConstraint oftype RegexConstraint {
@@ -7,7 +7,7 @@ constraint StadtteilConstraint oftype RegexConstraint {
 }
 
 valuetype IDType oftype text {
-    constraints: [ IDConstraint ]
+    constraints: [ IDConstraint ];
 }
 
 constraint IDConstraint oftype RegexConstraint {
