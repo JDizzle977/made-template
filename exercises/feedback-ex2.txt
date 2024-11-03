@@ -1,0 +1,24 @@
+Found 1 pipelines to execute: HerbstpflanzungPipeline
+[HerbstpflanzungPipeline] Overview:
+	Blocks (5 blocks with 1 pipes):
+	 -> HerbstpflanzungDataHttpExtractor (HttpExtractor)
+		 -> GetTextFile (TextFileInterpreter)
+			 -> GetAsCSV (CSVInterpreter)
+				 -> HerbstpflanzungTableInterpreter (TableInterpreter)
+					 -> HerbstpflanzungDbLoader (SQLiteLoader)
+
+[INFO] Preparing feedback for EXERCISE 2:
+[INFO] If this exercise does not need to be submitted yet, you can ignore all output after this.
+	Looking for exercises/exercise2.jv to execute.
+	[SUCCESS] Found exercises/exercise2.jv, executing.
+	Looking for trees.sqlite to grade.
+	[SUCCESS] Found output file trees.sqlite, grading...
+
+Feedback for Exercise 2
+	Overall points 17 of 17
+	---
+	By category:
+		Shape: 5 of 5
+		Types: 10 of 10
+		Quality: 2 of 2
+
