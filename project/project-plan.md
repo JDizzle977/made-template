@@ -2,37 +2,41 @@
 
 ## Title
 <!-- Give your project a short title. -->
-Wealth Distribution and Economic Success in the Americas
+Impact of Extreme Weather Events on the USA
 
 ## Main Question
 
 <!-- Think about one main question you want to answer based on the data. -->
-1. How do economic indicators such as education and regional investment influence prosperity and income mobility in North America?
+1. What economic impact do weather extremes such as storms, floods and tornadoes have on the USA?
 
 ## Description
 
 <!-- Describe your data science project in max. 200 words. Consider writing about why and how you attempt it. -->
-In North America, some people do accumulate wealth or gain economic success exceedingly unequally. This project explores how factors such as education, investment, and regional differences impact income and economic mobility. By charting historical and current income and economic data, it examines what regions specifically bear most of the economic inequity burden and what factors have a positive relationship to both wealth and economic mobility. Such analysis may also provide insights to help policy makers implement strategies for better, more equitable access to economic prosperity.
+Hurricanes, floods and Tornadoes in the United States are increasing in frequency and intensity. The present study explores how the various weather extremes contribute towards regional economies by means of an in-depth analysis of economic indicators including regional gross domestic product, insurance outlay, and losses at different states. It would outline the areas that are more prone to severe economic loss because of weather. It would also give further details on how natural calamities affect economic stability. Its findings might be useful to decision-makers in developing measures and methods for risk reduction to stabilize the economy.
+
+
 
 ## Datasources
 
 <!-- Describe each datasources you plan to use in a section. Use the prefic "DatasourceX" where X is the id of the datasource. -->
 
-### Datasource1: World Bank - Education Statistics
-* Metadata URL: https://datacatalog.worldbank.org/search/dataset/0038480/Education-Statistics
-* Data URL: https://datacatalogfiles.worldbank.org/ddh-published/0038480/DR0047022/Edstats_Updated.csv?versionId=2024-10-10T07:14:21.2811991Z
+### Datasource1: NOAA Storm Events Database
+* Metadata URL: https://www.ncei.noaa.gov/metadata/geoportal/rest/metadata/item/gov.noaa.ncdc:C00510/html
+* Metadata-URL (XML): https://www.ncei.noaa.gov/metadata/geoportal/rest/metadata/item/gov.noaa.ncdc:C00510/xml
+* Data URL: https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/
 * Data Type: CSV
-* License Type: Open Data
+* License Type: Open Data - Citation necessary
 
-It provides comprehensive education statistics from different countries, including information as enrollment rates, educational attainment, number of teachers, and government expenditure on education.
+NOAA Storm Events is a database of extreme weather events in the United States including storms, floods and Tornadoes with locations, dates, and impact notes of the events. It is ideal for analyzing how often and in what regions extreme weather events take place, and what kind of damage they cause.
 
-### Datasource2: World Bank - World Development Indicators
-* Metadata URL: https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators
-* Data URL: https://datacatalogfiles.worldbank.org/ddh-published/0037712/DR0045575/WDI_CSV_2024_10_24.zip?versionId=2024-10-28T13:09:29.1647687Z
+### Datasource2: Bureau of Economic Analysis (BEA) - GDP by State
+* Metadata URL: https://apps.bea.gov/itable/?ReqID=70&step=1#eyJhcHBpZCI6NzAsInN0ZXBzIjpbMSwyOSwyNSwzMSwyNiwyNywzMF0sImRhdGEiOltbIlRhYmxlSWQiLCI2MDAiXSxbIk1ham9yX0FyZWEiLCIwIl0sWyJTdGF0ZSIsWyIwIl1dLFsiQXJlYSIsWyJYWCJdXSxbIlN0YXRpc3RpYyIsWyItMSJdXSxbIlVuaXRfb2ZfbWVhc3VyZSIsIlBlcmNlbnRDaGFuZ2UiXSxbIlllYXIiLFsiLTEiXV0sWyJZZWFyQmVnaW4iLCItMSJdLFsiWWVhcl9FbmQiLCItMSJdXX0=
+* Data URL: https://apps.bea.gov/itable/?ReqID=70&step=1#eyJhcHBpZCI6NzAsInN0ZXBzIjpbMSwyOSwyNSwzMSwyNiwyNywzMF0sImRhdGEiOltbIlRhYmxlSWQiLCI2MDAiXSxbIk1ham9yX0FyZWEiLCIwIl0sWyJTdGF0ZSIsWyIwIl1dLFsiQXJlYSIsWyJYWCJdXSxbIlN0YXRpc3RpYyIsWyItMSJdXSxbIlVuaXRfb2ZfbWVhc3VyZSIsIlBlcmNlbnRDaGFuZ2UiXSxbIlllYXIiLFsiLTEiXV0sWyJZZWFyQmVnaW4iLCItMSJdLFsiWWVhcl9FbmQiLCItMSJdXX0=
 * Data Type: ZIP
-* License Type: Open Data
+* License Type: Open Data - Citation necessary (https://www.bea.gov/open-data)
 
-World Development Indicators comprise a wide set of economic, social, and environmental data from different countries. This includes such a set of indicators that include GNI per capita, poverty, unemployment rate, and many more, which could be used in the analysis of economic development and standards of living.
+BEA prepares regional statistics of economic output, including gross domestic product at the state level in the United States. These could be useful data for accounting in an economic damage study of specific weather events by state and, more generally, to study the impacts of such disasters on productivity losses and long-term economic stability.
+
 
 ## Work Packages
 
