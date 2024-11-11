@@ -43,7 +43,9 @@ BEA prepares regional statistics of economic output, including gross domestic pr
 <!-- List of work packages ordered sequentially, each pointing to an issue with more details. -->
 
 1. Data Extraction [#1][i1]
-2. Data Analysis [#2] [i2]
+2. Data Analysis [#2][i2]
+3. Data interpretation and correlation [#3][i3]
 
 [i1]: https://github.com/JDizzle977/made-template/issues/1
 [i2]: https://github.com/JDizzle977/made-template/issues/2
+[i3]: https://github.com/JDizzle977/made-template/issues/3
