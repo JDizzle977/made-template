@@ -24,6 +24,7 @@ data_dir = "../data"
 
 
 def download_and_extract_storm_event_files(url, download_dir=data_dir + '/storm_event_files'):
+    os.makedirs(download_dir, exist_ok=True)
 
     response = requests.get(url)
 
@@ -80,6 +81,8 @@ def download_and_extract_storm_event_files(url, download_dir=data_dir + '/storm_
 
 
 def csvs_to_excel(input_dir, output_file):
+    os.makedirs(output_file, exist_ok=True)
+
     with pd.ExcelWriter(output_file) as writer:
         for file in os.listdir(input_dir):
             if file.endswith(".csv"):
@@ -136,7 +139,7 @@ def download_bea_gdp_csv(url):
         driver.quit()
 
 def main():
-    print('stuff')
+    print('If the subdirectories of data_dir are not empty, the script assumes necessary data already is available! -> Clear them if data is inconsistent/broken and restart the shell-script.')
     storm_event_files_dir = os.path.join(data_dir, 'storm_event_files')
     if not os.listdir(storm_event_files_dir):
         download_and_extract_storm_event_files(urls["NOAA"])

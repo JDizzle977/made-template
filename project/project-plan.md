@@ -24,7 +24,7 @@ Hurricanes, floods and Tornadoes in the United States are increasing in frequenc
 * Metadata URL: https://www.ncei.noaa.gov/metadata/geoportal/rest/metadata/item/gov.noaa.ncdc:C00510/html
 * Metadata-URL (XML): https://www.ncei.noaa.gov/metadata/geoportal/rest/metadata/item/gov.noaa.ncdc:C00510/xml
 * Data URL: https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/
-* Data Type: CSV
+* Data Type: CSV inside a GZ-File
 * License Type: Open Data - Citation necessary
 
 NOAA Storm Events is a database of extreme weather events in the United States including storms, floods and Tornadoes with locations, dates, and impact notes of the events. It is ideal for analyzing how often and in what regions extreme weather events take place, and what kind of damage they cause.
@@ -32,7 +32,7 @@ NOAA Storm Events is a database of extreme weather events in the United States i
 ### Datasource2: Bureau of Economic Analysis (BEA) - GDP by State
 * Metadata URL: https://apps.bea.gov/itable/?ReqID=70&step=1#eyJhcHBpZCI6NzAsInN0ZXBzIjpbMSwyOSwyNSwzMSwyNiwyNywzMF0sImRhdGEiOltbIlRhYmxlSWQiLCI2MDAiXSxbIk1ham9yX0FyZWEiLCIwIl0sWyJTdGF0ZSIsWyIwIl1dLFsiQXJlYSIsWyJYWCJdXSxbIlN0YXRpc3RpYyIsWyItMSJdXSxbIlVuaXRfb2ZfbWVhc3VyZSIsIlBlcmNlbnRDaGFuZ2UiXSxbIlllYXIiLFsiLTEiXV0sWyJZZWFyQmVnaW4iLCItMSJdLFsiWWVhcl9FbmQiLCItMSJdXX0=
 * Data URL: https://apps.bea.gov/itable/?ReqID=70&step=1#eyJhcHBpZCI6NzAsInN0ZXBzIjpbMSwyOSwyNSwzMSwyNiwyNywzMF0sImRhdGEiOltbIlRhYmxlSWQiLCI2MDAiXSxbIk1ham9yX0FyZWEiLCIwIl0sWyJTdGF0ZSIsWyIwIl1dLFsiQXJlYSIsWyJYWCJdXSxbIlN0YXRpc3RpYyIsWyItMSJdXSxbIlVuaXRfb2ZfbWVhc3VyZSIsIlBlcmNlbnRDaGFuZ2UiXSxbIlllYXIiLFsiLTEiXV0sWyJZZWFyQmVnaW4iLCItMSJdLFsiWWVhcl9FbmQiLCItMSJdXX0=
-* Data Type: ZIP
+* Data Type: CSV
 * License Type: Open Data - Citation necessary (https://www.bea.gov/open-data)
 
 BEA prepares regional statistics of economic output, including gross domestic product at the state level in the United States. These could be useful data for accounting in an economic damage study of specific weather events by state and, more generally, to study the impacts of such disasters on productivity losses and long-term economic stability.
