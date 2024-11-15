@@ -9,13 +9,14 @@ constraint ShareConstraint oftype RangeConstraint{
     upperBoundInclusive: true;
 }
 
-valuetype positiveDECnotEmpty oftype text{
+
+
+valuetype positiveDECnotEmpty oftype decimal{
     constraints: [ OnlyDecimalConstraint ];
 }
 
-constraint OnlyDecimalConstraint oftype RegexConstraint {       // \d+: minimum one number, (\.\d+)?: optional numbers after decimal dot -> thus no empty values possible
-    regex: /^\d+(\.\d+)?$/;
-}
+constraint OnlyDecimalConstraint on decimal:       
+    value > 0;
 
 valuetype ValidISO31661 oftype text {
     constraints: [ ValidISO31661Constraint ];
@@ -96,7 +97,6 @@ pipeline GraphsPipeline {
         write: ["Country Code", "Economy", "GDP per Capita", "Bond Issuance Share"];
     }
 
-
     block gdpPerCapitaTableInterpreter oftype TableInterpreter {
         header: true;
         columns: [
@@ -104,6 +104,7 @@ pipeline GraphsPipeline {
             "GDP per Capita" oftype positiveDECnotEmpty,
         ];
     }
+
 
     // Loads the created table into an SQLite database sink 
     block gdpPerCapitaGraphDbLoader oftype SQLiteLoader {
