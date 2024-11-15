@@ -1,5 +1,5 @@
 valuetype BoundType oftype decimal{
-    constraints: [ShareConstraint, OnlyDecimalConstraint];
+    constraints: [ShareConstraint];
 }
 
 constraint ShareConstraint oftype RangeConstraint{
@@ -9,7 +9,7 @@ constraint ShareConstraint oftype RangeConstraint{
     upperBoundInclusive: true;
 }
 
-valuetype positiveDECnotEmpty oftype decimal{
+valuetype positiveDECnotEmpty oftype text{
     constraints: [ OnlyDecimalConstraint ];
 }
 
@@ -45,7 +45,7 @@ pipeline GraphsPipeline {
     }
 
     block GraphColumnHeaderRenaming oftype CellWriter {     // A1:A4 as the new sheet data begins at the top left of the sheet
-        at: range A1:A4;
+        at: range A1:D1;
         write: ["Country Code", "Economy", "GDP per Capita", "Bond Issuance Share"];
     }
 
@@ -92,7 +92,7 @@ pipeline GraphsPipeline {
     }
 
     block GraphColumnHeaderRenaming2 oftype CellWriter {     // A1:A4 as the new sheet data begins at the top left of the sheet
-        at: range A1:A4;
+        at: range A1:D1;
         write: ["Country Code", "Economy", "GDP per Capita", "Bond Issuance Share"];
     }
 
