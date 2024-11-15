@@ -1,0 +1,123 @@
+valuetype BoundType oftype decimal{
+    constraints: [ShareConstraint, OnlyDecimalConstraint]
+}
+
+constraint ShareConstraint oftype RangeConstraint{
+    lowerBound: 0;
+    lowerBoundInclusive: true;
+    upperBound: 1;
+    upperBoundInclusive: true;
+}
+
+valuetype positiveDECnotEmpty oftype decimal{
+    constraints: [ OnlyDecimalConstraint ];
+}
+
+constraint OnlyDecimalConstraint oftype RegexConstraint {       // \d+: minimum one number, (\.\d+)?: optional numbers after decimal dot -> thus no empty values possible
+    regex: /^\d+(\.\d+)?$/
+}
+
+valuetype ValidISO31661 oftype text {
+    constraints: [ ValidISO31661Constraint ];
+}
+
+constraint ValidISO31661Constraint oftype RegexConstraint { // Everything thats not a 3 letter country code is invalid, thus empty cells are invalid too 
+    regex: /^[A-Z]{3}$/;                 
+}
+
+pipeline GraphsPipeline {
+
+    // Input-Type: None -> Starting node 
+    // Output-Type: File -> Probably gives it implicitely to XLSXInterpreter, because XLSXFI doesnt take any explicit parameters 
+    block GraphDataHttpExtractor oftype HttpExtractor{                
+        url: "https://thedocs.worldbank.org/en/doc/7d852628d96b9411d43e5d36d5dff941-0050062022/original/Graphs-Chapter-5-02082022.xlsx";
+    }
+
+    block GraphInterpreter oftype XLSXInterpreter {}      //interprets an xlsx file and outputs ->  a workbook containing sheets
+                                                        // Input-Type: File 
+    
+    block GraphSheetPicker oftype SheetPicker {             // Input: Sheets, Output: new Sheet 
+        sheetName: "Figure S5.1.2";
+    }
+
+    block GraphDataSelector oftype CellRangeSelector {      // Input:Sheet, Output: New sheet       // Assumption: In new sheet the data is at the top left of the sheet
+        select: range P2:S45;
+    }
+
+    block GraphColumnHeaderRenaming oftype CellWriter {     // A1:A4 as the new sheet data begins at the top left of the sheet
+        at: range A1:A4;
+        write: ["Country Code", "Economy", "GDP per Capita", "Bond Issuance Share"];
+    }
+
+    block bondIssuanceTableInterpreter oftype TableInterpreter {
+        header: true;
+        columns: [
+            "Country Code" oftype ValidISO31661,
+            "Bond Issuance Share" oftype BoundType
+        ];
+    }
+
+    // Loads the created table into an SQLite database sink 
+    block bondIssuanceGraphDbLoader oftype SQLiteLoader {
+        table: "bondIssuance";
+        file: "country-stats.sqlite";
+    }
+
+
+    
+
+    // Composite Blocks -> Just the sequence in which the pipeline is executed 
+    GraphDataHttpExtractor
+        -> GraphInterpreter
+        -> GraphSheetPicker
+        -> GraphDataSelector
+        -> GraphColumnHeaderRenaming
+        -> bondIssuanceTableInterpreter
+        -> bondIssuanceGraphDbLoader;
+    
+    block GraphDataHttpExtractor2 oftype HttpExtractor{                
+        url: "https://thedocs.worldbank.org/en/doc/7d852628d96b9411d43e5d36d5dff941-0050062022/original/Graphs-Chapter-5-02082022.xlsx";
+    }
+
+
+    block GraphInterpreter2 oftype XLSXInterpreter {}      //interprets an xlsx file and outputs ->  a workbook containing sheets
+                                                        // Input-Type: File 
+    
+    block GraphSheetPicker2 oftype SheetPicker {             // Input: Sheets, Output: new Sheet 
+        sheetName: "Figure S5.1.2";
+    }
+
+    block GraphDataSelector2 oftype CellRangeSelector {      // Input:Sheet, Output: New sheet       // Assumption: In new sheet the data is at the top left of the sheet
+        select: range P2:S45;
+    }
+
+    block GraphColumnHeaderRenaming2 oftype CellWriter {     // A1:A4 as the new sheet data begins at the top left of the sheet
+        at: range A1:A4;
+        write: ["Country Code", "Economy", "GDP per Capita", "Bond Issuance Share"];
+    }
+
+
+    block gdpPerCapitaTableInterpreter oftype TableInterpreter {
+        header: true;
+        columns: [
+            "Country Code" oftype ValidISO31661,
+            "GDP per Capita" oftype positiveDECnotEmpty,
+        ];
+    }
+
+    // Loads the created table into an SQLite database sink 
+    block gdpPerCapitaGraphDbLoader oftype SQLiteLoader {
+        table: "gdpPerCapita";
+        file: "country-stats.sqlite";
+    }
+
+
+    GraphDataHttpExtractor2
+        -> GraphInterpreter2
+        -> GraphSheetPicker2
+        -> GraphDataSelector2
+        -> GraphColumnHeaderRenaming2
+        -> gdpPerCapitaTableInterpreter
+        -> gdpPerCapitaGraphDbLoader;
+
+}
