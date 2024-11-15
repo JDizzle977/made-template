@@ -1,5 +1,5 @@
 valuetype BoundType oftype decimal{
-    constraints: [ShareConstraint, OnlyDecimalConstraint]
+    constraints: [ShareConstraint, OnlyDecimalConstraint];
 }
 
 constraint ShareConstraint oftype RangeConstraint{
@@ -14,7 +14,7 @@ valuetype positiveDECnotEmpty oftype decimal{
 }
 
 constraint OnlyDecimalConstraint oftype RegexConstraint {       // \d+: minimum one number, (\.\d+)?: optional numbers after decimal dot -> thus no empty values possible
-    regex: /^\d+(\.\d+)?$/
+    regex: /^\d+(\.\d+)?$/;
 }
 
 valuetype ValidISO31661 oftype text {
