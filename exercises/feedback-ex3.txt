@@ -1,0 +1,36 @@
+Found 1 pipelines to execute: GraphsPipeline
+[GraphsPipeline] Overview:
+	Blocks (14 blocks with 2 pipes):
+	 -> GraphDataHttpExtractor (HttpExtractor)
+		 -> GraphInterpreter (XLSXInterpreter)
+			 -> GraphSheetPicker (SheetPicker)
+				 -> GraphDataSelector (CellRangeSelector)
+					 -> GraphColumnHeaderRenaming (CellWriter)
+						 -> bondIssuanceTableInterpreter (TableInterpreter)
+							 -> bondIssuanceGraphDbLoader (SQLiteLoader)
+
+	 -> GraphDataHttpExtractor2 (HttpExtractor)
+		 -> GraphInterpreter2 (XLSXInterpreter)
+			 -> GraphSheetPicker2 (SheetPicker)
+				 -> GraphDataSelector2 (CellRangeSelector)
+					 -> GraphColumnHeaderRenaming2 (CellWriter)
+						 -> gdpPerCapitaTableInterpreter (TableInterpreter)
+							 -> gdpPerCapitaGraphDbLoader (SQLiteLoader)
+
+[INFO] Preparing feedback for EXERCISE 3:
+[INFO] If this exercise does not need to be submitted yet, you can ignore all output after this.
+	Looking for exercises/exercise3.jv to execute.
+	[SUCCESS] Found exercises/exercise3.jv, executing.
+	Looking for country-stats.sqlite to grade.
+	[SUCCESS] Found output file country-stats.sqlite, grading...
+	Looking for country-stats.sqlite to grade.
+	[SUCCESS] Found output file country-stats.sqlite, grading...
+
+Feedback for 3
+	Overall points 20 of 20
+	---
+	By category:
+		Shape: 8 of 8
+		Types: 8 of 8
+		Quality: 4 of 4
+
