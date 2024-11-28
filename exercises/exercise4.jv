@@ -23,15 +23,6 @@ constraint OnlyStringConstraing oftype RegexConstraint { // Everything thats not
     regex: /^[a-zA-Z]+$/;                 
 }
 
-
-valuetype BooleanGER oftype text{
-    constraints: [BooleanGERConstraint];
-}
-
-constraint BooleanGERConstraint oftype AllowlistConstraint{
-    allowlist: ["Ja", "Nein"];
-}
-
 transform TransformCelsiusToFarenheit {
     from CelsiusTemp oftype decimal;
     to FahrenheitTemp oftype decimal;
@@ -77,12 +68,11 @@ pipeline BatteryTemperaturePipeline {
         header: false;
         columns: [
             "id" oftype positiveInt,
-            "producer" oftype string_no_number,
+            "producer" oftype text,
             "model" oftype text, 
             "month" oftype Month,
             "temperature" oftype decimal,
-            "battery_temperature" oftype decimal,
-            "Geraet aktiv" oftype BooleanGER,
+            "battery_temperature" oftype decimal
         ];
     }
 
