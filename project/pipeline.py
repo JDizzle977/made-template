@@ -14,6 +14,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+import sqlite3
 
 urls = {
     "NOAA": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/",
@@ -80,8 +81,18 @@ def download_and_extract_storm_event_files(url, download_dir=data_dir + '/storm_
             print(f"Download Request failed: {file_url}")
 
 
+def filter_columns(dataframe, columns_to_keep):
+    available_columns = [col for col in columns_to_keep if col in dataframe.columns]
+    return dataframe[available_columns]
+
 def csvs_to_excel(input_dir, output_file):
-    os.makedirs(output_file, exist_ok=True)
+
+    required_columns = [
+        "EVENT_ID", "STATE", "MONTH_NAME", "EVENT_TYPE", "BEGIN_DATE_TIME", "END_DATE_TIME",
+        "INJURIES_DIRECT", "INJURIES_INDIRECT", "DEATHS_DIRECT", "DEATHS_INDIRECT",
+        "DAMAGE_PROPERTY", "DAMAGE_CROPS", "SOURCE", "BEGIN_LOCATION", "END_LOCATION",
+        "EPISODE_NARRATIVE", "DATA_SOURCE"
+    ]
 
     with pd.ExcelWriter(output_file) as writer:
         for file in os.listdir(input_dir):
@@ -90,6 +101,7 @@ def csvs_to_excel(input_dir, output_file):
                 year = re.search(r'_d(\d{4})_', file).group(1)  # extracting the year from the filename
                 print(year)
                 df = pd.read_csv(os.path.join(input_dir, file))
+                df = filter_columns(df, required_columns)
                 df.to_excel(writer, sheet_name=year, index=False)
 
 
@@ -138,19 +150,57 @@ def download_bea_gdp_csv(url):
     finally:
         driver.quit()
 
+
+def storm_events_to_sqlite(excel_file, db_file):
+    excel_data = pd.ExcelFile(excel_file)
+
+    conn = sqlite3.connect(db_file)
+    cursor = conn.cursor()
+
+    try:
+        for sheet_name in excel_data.sheet_names:
+
+            df = excel_data.parse(sheet_name)
+
+            df['sheet_name'] = sheet_name
+
+            df.to_sql(sheet_name, conn, if_exists='replace', index=False)
+
+            print(f"Successfully written sheet '{sheet_name}' to database.")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+    finally:
+        conn.close()
+        print("Database connection closed.")
+
 def main():
     print('If the subdirectories of data_dir are not empty, the script assumes necessary data already is available! -> Clear them if data is inconsistent/broken and restart the shell-script.')
-    storm_event_files_dir = os.path.join(data_dir, 'storm_event_files')
-    if not os.listdir(storm_event_files_dir):
-        download_and_extract_storm_event_files(urls["NOAA"])
 
+    storm_event_files_dir = os.path.join(data_dir, 'storm_event_files')
     combined_storm_events_dir = os.path.join(data_dir, 'storm_event_ds_combined')
-    if not os.listdir(combined_storm_events_dir):
-        csvs_to_excel(storm_event_files_dir, data_dir + '/storm_event_ds_combined/storm_event_ds_combined.xlsx')
     bea_gdp_dir = os.path.join(data_dir, 'bea_gdp')
 
+    for directory in [storm_event_files_dir, combined_storm_events_dir, bea_gdp_dir]:
+        if not os.path.exists(directory):
+            os.makedirs(directory, exist_ok=True)
+            print(f"Created missing directory: {directory}")
+
+    if not os.listdir(storm_event_files_dir):
+        print(f"Processing: {storm_event_files_dir} is either empty or newly created.")
+        download_and_extract_storm_event_files(urls["NOAA"])
+
+    if not os.listdir(combined_storm_events_dir):
+        print(f"Processing: {combined_storm_events_dir} is either empty or newly created.")
+        csvs_to_excel(storm_event_files_dir, os.path.join(combined_storm_events_dir, 'storm_event_ds_combined.xlsx'))
+
     if not os.listdir(bea_gdp_dir):
+        print(f"Processing: {bea_gdp_dir} is either empty or newly created.")
         download_bea_gdp_csv(urls["BEA"])
+
+    # Convert the Storm Data from an Excel-File to an sqlite-DB
+    storm_events_to_sqlite("../data/storm_event_ds_combined/storm_event_ds_combined.xlsx", "../data/storm_gdb_analysis.db")
 
 if __name__ == "__main__":
     main()
