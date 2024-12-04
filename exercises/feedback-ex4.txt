@@ -1,0 +1,33 @@
+Found 1 pipelines to execute: BatteryTemperaturePipeline
+[BatteryTemperaturePipeline] Overview:
+	Blocks (12 blocks with 1 pipes):
+	 -> BatteryTemperatureDataHttpExtractor (HttpExtractor)
+		 -> ZipArchiveInterpreter (ArchiveInterpreter)
+			 -> SelectDataFile (FilePicker)
+				 -> GetTextFile (TextFileInterpreter)
+					 -> GetAsCSV (CSVInterpreter)
+						 -> PreFilterColumns (CellRangeSelector)
+							 -> RemoveColumns (ColumnDeleter)
+								 -> HeaderRenaming (CellWriter)
+									 -> TemperatureTableInterpreter (TableInterpreter)
+										 -> ConvertTemp (TableTransformer)
+											 -> ConvertBatteryTemp (TableTransformer)
+												 -> TemperaturesDB (SQLiteLoader)
+
+	[ConvertTemp] Column "temperature" will be overwritten
+	[ConvertBatteryTemp] Column "battery_temperature" will be overwritten
+[INFO] Preparing feedback for EXERCISE 4:
+[INFO] If this exercise does not need to be submitted yet, you can ignore all output after this.
+	Looking for exercises/exercise4.jv to execute.
+	[SUCCESS] Found exercises/exercise4.jv, executing.
+	Looking for temperatures.sqlite to grade.
+	[SUCCESS] Found output file temperatures.sqlite, grading...
+
+Feedback for 4
+	Overall points 14 of 14
+	---
+	By category:
+		Shape: 4 of 4
+		Types: 8 of 8
+		Quality: 2 of 2
+

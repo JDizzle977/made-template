@@ -1,0 +1,71 @@
+valuetype Only1925 oftype integer{
+    constraints: [Only1925Constraint];
+}
+constraint Only1925Constraint oftype RangeConstraint{
+    lowerBound: 1925;
+    upperBound: 1925;
+}
+
+valuetype NinetyToMinus90 oftype decimal{
+    constraints: [NinetyToMinus90Constraint];
+}
+constraint NinetyToMinus90Constraint oftype RangeConstraint{
+    lowerBound: -90;
+    upperBound: 90;
+}
+
+valuetype TextWithGermanUmlauts oftype text {
+    constraints: [ TextUmlautsConstraint ];
+}
+constraint TextUmlautsConstraint oftype RegexConstraint {
+    regex: /^[a-zA-ZäöüÄÖÜß ]+$/;                 
+}
+
+pipeline StopsPipeline {
+
+    block StopsDataHttpExtractor oftype HttpExtractor{                
+        url: "https://gtfs.rhoenenergie-bus.de/GTFS.zip";
+    }
+
+    block ZipArchiveInterpreter oftype ArchiveInterpreter{
+        archiveType: "zip";
+    }
+
+    block SelectDataFile oftype FilePicker{
+        path: "/stops.txt";
+    }
+
+    block GetTextFile oftype TextFileInterpreter{}
+                                                        
+    block GetAsCSV oftype CSVInterpreter{
+        enclosing: '"';
+        enclosingEscape: '"';
+    }
+
+
+    block StopsTableInterpreter oftype TableInterpreter{
+        header: true;
+        columns: [
+            "stop_id" oftype integer,
+            "stop_name" oftype TextWithGermanUmlauts,
+            "stop_lat" oftype NinetyToMinus90, 
+            "stop_lon" oftype NinetyToMinus90,
+            "zone_id" oftype Only1925
+        ];
+    }
+
+    block StopsDB oftype SQLiteLoader {
+        table: "stops";
+        file: "gtfs.sqlite";
+    }
+
+    StopsDataHttpExtractor
+        -> ZipArchiveInterpreter
+        -> SelectDataFile
+        -> GetTextFile
+        -> GetAsCSV
+        -> StopsTableInterpreter
+        -> StopsDB;
+
+
+}
