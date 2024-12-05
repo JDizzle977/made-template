@@ -7,7 +7,7 @@ on:
     paths:
       - project/**
 
-    workflow_dispatch:
+  workflow_dispatch:
     
 jobs:
   test:
