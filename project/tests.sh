@@ -1,4 +1,5 @@
 #!/bin/bash
+ls -la
 pytest test_pipeline.py --verbose
 
 # Execution:
