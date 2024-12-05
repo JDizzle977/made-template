@@ -21,6 +21,7 @@ jobs:
             
       - name: Make File executable
         run: |
+              ls 
               chmod +x project/tests.sh 
 
       - name: Run Tests
