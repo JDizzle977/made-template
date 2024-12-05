@@ -22,7 +22,7 @@ jobs:
       - name: Make File executable
         run: |
               ls 
-              chmod +x project/tests.sh 
+              chmod +x main/project/tests.sh 
 
       - name: Run Tests
-        run: project/tests.sh 
+        run: main/project/tests.sh 
