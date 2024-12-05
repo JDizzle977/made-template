@@ -2,6 +2,7 @@
 
 if [ ! -d "project" ]; then
   echo "Was not in the project directory. Changing to the project directory."
+  cd main
   cd project
 fi
 
