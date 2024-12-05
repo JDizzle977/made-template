@@ -29,10 +29,14 @@ jobs:
               python -m pip install --upgrade pip
               pip install pytest pandas
             
+      - name: Change directory to projects
+        run: |
+              cd main
+              cd project
+
       - name: Make File executable
         run: |
-              ls 
-              chmod +x main/project/tests.sh 
+              chmod +x tests.sh 
 
       - name: Run Tests
-        run: main/project/tests.sh 
+        run: tests.sh 
