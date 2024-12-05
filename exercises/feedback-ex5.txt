@@ -1,0 +1,26 @@
+Found 1 pipelines to execute: StopsPipeline
+[StopsPipeline] Overview:
+	Blocks (7 blocks with 1 pipes):
+	 -> StopsDataHttpExtractor (HttpExtractor)
+		 -> ZipArchiveInterpreter (ArchiveInterpreter)
+			 -> SelectDataFile (FilePicker)
+				 -> GetTextFile (TextFileInterpreter)
+					 -> GetAsCSV (CSVInterpreter)
+						 -> StopsTableInterpreter (TableInterpreter)
+							 -> StopsDB (SQLiteLoader)
+
+[INFO] Preparing feedback for EXERCISE 5:
+[INFO] If this exercise does not need to be submitted yet, you can ignore all output after this.
+	Looking for exercises/exercise5.jv to execute.
+	[SUCCESS] Found exercises/exercise5.jv, executing.
+	Looking for gtfs.sqlite to grade.
+	[SUCCESS] Found output file gtfs.sqlite, grading...
+
+Feedback for 5
+	Overall points 14 of 14
+	---
+	By category:
+		Shape: 4 of 4
+		Types: 5 of 5
+		Quality: 5 of 5
+
