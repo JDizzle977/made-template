@@ -7,6 +7,8 @@ on:
     paths:
       - project/**
 
+    workflow_dispatch:
+    
 jobs:
   test:
     runs-on: ubuntu-latest
