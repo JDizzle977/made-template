@@ -14,7 +14,9 @@ jobs:
     steps: 
       - name: Check out Code 
         uses: actions/checkout@v4
-
+        with:
+          path: main
+            
       - name: Make File executable
         run: |
               chmod +x project/tests.sh 
