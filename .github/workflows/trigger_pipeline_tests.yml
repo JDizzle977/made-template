@@ -28,10 +28,10 @@ jobs:
         run: | 
               python -m pip install --upgrade pip
               pip install pytest pandas
-              
+
       - name: Make File executable
         run: |
-              chmod +x tests.sh 
+              chmod +x main/project/tests.sh 
 
       - name: Run Tests
-        run: tests.sh 
+        run: main/project/tests.sh 
