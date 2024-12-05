@@ -1,5 +1,12 @@
 #!/bin/bash
-ls -la
+
+if [ ! -d "project" ]; then
+  echo "Was not in the project directory. Changing to the project directory."
+  cd project
+fi
+
+echo "Starting Testing..."
+
 pytest test_pipeline.py --verbose
 
 # Execution:
