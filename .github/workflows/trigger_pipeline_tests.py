@@ -6,8 +6,6 @@ on:
       - main
     paths:
       - project/**
-
-    workflow_dispatch:
     
 jobs:
   test:
