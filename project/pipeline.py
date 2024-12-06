@@ -1,6 +1,6 @@
 import os
 import re
-
+import platform
 import requests
 from bs4 import BeautifulSoup
 import gzip
