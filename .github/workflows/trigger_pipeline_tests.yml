@@ -29,9 +29,10 @@ jobs:
               python -m pip install --upgrade pip
               pip install pytest pandas requests beautifulsoup4 selenium openpyxl
 
-      - name: Make File executable
+      - name: Make Files executable
         run: |
               chmod +x main/project/tests.sh 
+              chmod +x main/project/chromedriver.exe
 
       - name: Run Tests
         run: main/project/tests.sh 
