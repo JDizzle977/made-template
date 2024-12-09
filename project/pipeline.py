@@ -116,13 +116,13 @@ def download_bea_gdp_csv(url):
     prefs = {"download.default_directory": os.path.abspath(download_dir)}
     chrome_options.add_experimental_option("prefs", prefs)
 
-    # Dynamically setting the ChromeDriver path based on OS such that the pipeline on ubuntu doesnt fail
+    # Dynamically setting the ChromeDriver path based on OS such that the Github-Pipeline on ubuntu doesnt fail
     if platform.system() == "Windows":
         driver_path = os.path.join(os.getcwd(), "chromedriver.exe")
     elif platform.system() == "Linux":
         driver_path = "/usr/local/bin/chromedriver" 
     else:
-        raise OSError(f"Scotty, wir haben ein Problem. Das OS ist unbekannt! {platform.system()}")
+        raise OSError(f"Scotty, wir haben ein Problem. Das OS ist unbekannt! {platform.system()}. This is a git push pipeline trigger test!")
 
 
     #driver_path = os.path.join(os.getcwd(), 'chromedriver.exe')
