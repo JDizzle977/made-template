@@ -122,7 +122,7 @@ def download_bea_gdp_csv(url):
     elif platform.system() == "Linux":
         driver_path = "/usr/local/bin/chromedriver" 
     else:
-        raise OSError(f"Scotty, wir haben ein Problem. Das OS ist unbekannt! {platform.system()}. This is a git push pipeline trigger test!")
+        raise OSError(f"Scotty, wir haben ein Problem. Das OS ist unbekannt! {platform.system()}.")
 
 
     #driver_path = os.path.join(os.getcwd(), 'chromedriver.exe')
