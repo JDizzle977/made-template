@@ -184,6 +184,99 @@ def storm_events_to_sqlite(excel_file, db_file):
         conn.close()
         print("Database connection closed.")
 
+
+def clean_bea_gdp_csv(file_path):
+    df = pd.read_csv(file_path, skiprows=3)
+
+    df = df.drop(df.columns[0], axis=1)
+
+    # creating new file
+    base_name = os.path.basename(file_path)
+    dir_name = os.path.dirname(file_path)
+    clean_file_name = f"cleaned_{base_name}"
+    clean_file_path = os.path.join(dir_name, clean_file_name)
+
+    # saving cleaned file
+    df.to_csv(clean_file_path, index=False)
+
+    print(f"Cleaned data saved to {clean_file_path}")
+
+    return clean_file_path
+
+
+def create_and_fill_bea_db(cleaned_file_path, db_name="gdp_data.db"):
+
+    df = pd.read_csv(cleaned_file_path)
+
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+
+    # Creating a table for the GeoNames -> United States, Alabama, ...
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS GeoNames (
+            GeoNameID INTEGER PRIMARY KEY AUTOINCREMENT,
+            GeoName TEXT UNIQUE
+        )
+        ''')
+
+    # Creating a table for the Indicators -> Real GDP, Real personal income, ...
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Indicators (
+            IndicatorID INTEGER PRIMARY KEY AUTOINCREMENT,
+            LineCode REAL,
+            Description TEXT UNIQUE
+        )
+        ''')
+
+    # Creating a table for the data -> 1999 +4.8 increase of GDP, ...
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS GDPData (
+            GDPDataID INTEGER PRIMARY KEY AUTOINCREMENT,
+            GeoNameID INTEGER,
+            IndicatorID INTEGER,
+            Year INTEGER,
+            Value REAL,
+            FOREIGN KEY (GeoNameID) REFERENCES GeoNames(GeoNameID),
+            FOREIGN KEY (IndicatorID) REFERENCES Indicators(IndicatorID)
+        )
+        ''')
+
+    # Making the GeoName table values unique, as they can be used multiple times due to foreign key association
+    geo_names = df["GeoName"].unique()
+    cursor.executemany('INSERT OR IGNORE INTO GeoNames (GeoName) VALUES (?)',
+                       [(name,) for name in geo_names])
+
+    # Indicators also repeat for each category -> thus can also be made unique
+    indicators = df[["LineCode", "Description"]].drop_duplicates()
+    cursor.executemany('INSERT OR IGNORE INTO Indicators (LineCode, Description) VALUES (?, ?)',
+                       indicators.values)
+
+    # Transform the DF to long format for year-value pairs
+    df_long = df.melt(id_vars=["GeoName", "LineCode", "Description"],
+                      var_name="Year",
+                      value_name="Value")
+
+    # Verification that year is of the type integer plus handling missing values
+    df_long["Year"] = df_long["Year"].astype(int, errors='ignore')
+    df_long["Value"] = pd.to_numeric(df_long["Value"], errors='coerce')
+
+    # Mapping GeoNames and Indicators to their IDs
+    geo_name_map = {row[1]: row[0] for row in cursor.execute('SELECT GeoNameID, GeoName FROM GeoNames')}
+    indicator_map = {row[1]: row[0] for row in cursor.execute('SELECT IndicatorID, LineCode FROM Indicators')}
+
+    df_long["GeoNameID"] = df_long["GeoName"].map(geo_name_map)
+    df_long["IndicatorID"] = df_long["LineCode"].map(indicator_map)
+
+    # Inserting the data into GDPData table
+    gdp_data = df_long[["GeoNameID", "IndicatorID", "Year", "Value"]].dropna()
+    gdp_data.to_sql("GDPData", conn, if_exists="append", index=False)
+
+    conn.commit()
+    conn.close()
+
+    print(f"Database {db_name} created and populated successfully.")
+
+
 def main():
     print('If the subdirectories of data_dir are not empty, the script assumes necessary data already is available! -> Clear them if data is inconsistent/broken and restart the shell-script.')
 
@@ -204,12 +297,36 @@ def main():
         print(f"Processing: {combined_storm_events_dir} is either empty or newly created.")
         csvs_to_excel(storm_event_files_dir, os.path.join(combined_storm_events_dir, 'storm_event_ds_combined.xlsx'))
 
+    # Converting the Storm Data from an Excel-File to an sqlite-DB
+    sqlite_db_path = "../data/storm_gdb_analysis.db"
+    storm_events_combined_file = os.path.join(combined_storm_events_dir, 'storm_event_ds_combined.xlsx')
+
+    if not os.path.exists(sqlite_db_path):
+        print(f"SQLite database not found -> Converting {storm_events_combined_file} to SQLite db.")
+        storm_events_to_sqlite(storm_events_combined_file, sqlite_db_path)
+    else:
+        print(f"SQLite database {sqlite_db_path} already exists -> Skipping processing.")
+
+
     if not os.listdir(bea_gdp_dir):
         print(f"Processing: {bea_gdp_dir} is either empty or newly created.")
         download_bea_gdp_csv(urls["BEA"])
 
-    # Convert the Storm Data from an Excel-File to an sqlite-DB
-    storm_events_to_sqlite("../data/storm_event_ds_combined/storm_event_ds_combined.xlsx", "../data/storm_gdb_analysis.db")
+    input_file = os.path.join(bea_gdp_dir, 'Table.csv')
+    cleaned_file = os.path.join(bea_gdp_dir, 'cleaned_Table.csv')
+
+    if not os.path.exists(cleaned_file):
+        print(f"Cleaned file not found -> Processing {input_file}.")
+        clean_bea_gdp_csv(input_file)
+    else:
+        print(f"Cleaned file {cleaned_file} already exists -> Skipping processing.")
+
+    bea_gdp_db_path = os.path.join(data_dir, 'gdp_data.db')
+    if not os.path.exists(bea_gdp_db_path):
+       create_and_fill_bea_db(cleaned_file, bea_gdp_db_path)
+    else:
+        print(f"Database {bea_gdp_db_path} already exists -> No creation of the database necessary")
+
 
 if __name__ == "__main__":
     main()
