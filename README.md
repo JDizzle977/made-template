@@ -1,37 +1,55 @@
-# Methods of Advanced Data Engineering Template Project
+# Impact of Extreme Weather Events on the USA
 
-This template project provides some structure for your open data project in the MADE module at FAU.
-This repository contains (a) a data science project that is developed by the student over the course of the semester, and (b) the exercises that are submitted over the course of the semester.
+## Project Description
 
-To get started, please follow these steps:
-1. Create your own fork of this repository. Feel free to rename the repository right after creation, before you let the teaching instructors know your repository URL. **Do not rename the repository during the semester**.
+This project explores the economic impacts of extreme weather events such as storms, floods, and tornadoes on the United States. Using data from the NOAA Storm Events Database and the Bureau of Economic Analysis (BEA) - GDP by State, a detailed analysis is conducted to identify correlations between extreme weather events and various economic factors, such as real personal income and real personal consumption expenditures (PCE).
 
-## Project Work
-Your data engineering project will run alongside lectures during the semester. We will ask you to regularly submit project work as milestones, so you can reasonably pace your work. All project work submissions **must** be placed in the `project` folder.
+The project is divided into four main steps:
 
-### Exporting a Jupyter Notebook
-Jupyter Notebooks can be exported using `nbconvert` (`pip install nbconvert`). For example, to export the example notebook to HTML: `jupyter nbconvert --to html examples/final-report-example.ipynb --embed-images --output final-report.html`
+1. **Data Collection**: Gathering relevant data from the NOAA Storm Events Database and BEA.
+2. **Data Analysis**: Initial analysis of the data to identify trends and patterns.
+3. **Data Transformation**: Transforming raw data into a format suitable for analysis.
+4. **Data Interpretation/Correlation**: Interpreting the results and examining the correlations between extreme weather events and economic factors.
+
+## Data Sources
+
+- **NOAA Storm Events Database**: Contains information on extreme weather events in the U.S.
+- **Bureau of Economic Analysis (BEA) - GDP by State**: Contains data on the GDP of individual U.S. states.
+
+## Project Goals
+
+- **Understanding Correlations**: Investigating correlations between extreme weather events and economic factors like real personal income and real PCE.
+- **Economic Impacts**: Determining the economic impact of extreme weather events on different states in the U.S.
+
+## Data Structure
+
+- **NOAA Storm Events Database**:
+  - `Event Type`: Type of extreme weather event (e.g., tornado, storm, flood).
+  - `State`: Affected state.
+  - `Date`: Date of the event.
+  - `Damage`: Amount of damage (in dollars).
+
+- **BEA - GDP by State**:
+  - `State`: U.S. state.
+  - `Year`: Year of data collection.
+  - `Real GDP`: Real gross domestic product
+  - `Real Personal Income`: Real personal income in millions of dollars (inflation-adjusted).
+  - `Real PCE`: Real personal consumption expenditure in millions of dollars (inflation-adjusted).
 
 
-## Exercises
-During the semester you will need to complete exercises using [Jayvee](https://github.com/jvalue/jayvee). You **must** place your submission in the `exercises` folder in your repository and name them according to their number from one to five: `exercise<number from 1-5>.jv`.
+## Installation
 
-In regular intervals, exercises will be given as homework to complete during the semester. Details and deadlines will be discussed in the lecture, also see the [course schedule](https://made.uni1.de/).
+### Prerequisites
 
-### Exercise Feedback
-We provide automated exercise feedback using a GitHub action (that is defined in `.github/workflows/exercise-feedback.yml`). 
+- Python 3.9 or higher
+- The following Python libraries:
+  - pandas
+  - requests
+  - beautifulsoup4
+  - selenium
+  - matplotlib
 
-To view your exercise feedback, navigate to Actions → Exercise Feedback in your repository.
+## Purpose of Py-Files
 
-The exercise feedback is executed whenever you make a change in files in the `exercise` folder and push your local changes to the repository on GitHub. To see the feedback, open the latest GitHub Action run, open the `exercise-feedback` job and `Exercise Feedback` step. You should see command line output that contains output like this:
-
-```sh
-Found exercises/exercise1.jv, executing model...
-Found output file airports.sqlite, grading...
-Grading Exercise 1
-	Overall points 17 of 17
-	---
-	By category:
-		Shape: 4 of 4
-		Types: 13 of 13
-```
+- pipeline.py is used for data-acquisition and -transformation into a fitting format for sql-tables
+- data_correlation.py is used to calculate the overall correlation and the correlation on the state level
