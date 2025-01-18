@@ -2,9 +2,19 @@
 
 ## Project Description
 
-This project explores the economic impacts of extreme weather events such as storms, floods, and tornadoes on the United States. Using data from the NOAA Storm Events Database and the Bureau of Economic Analysis (BEA) - GDP by State, a detailed analysis is conducted to identify correlations between extreme weather events and various economic factors, such as real personal income and real personal consumption expenditures (PCE).
+The trend of extreme weather phenomena that include storms, floods and tornadoes has intensified in many regions within the United States. This is a trend of events that brings forth
+questions about their economic implications. The central question that this report is about to
+address is:
 
-The project is divided into four main steps:
+### To what extent do extreme weather events such as storms, floods and tornadoes impact the GDP of the United States and consequently the availability of financial resources?
+
+The study addresses this issue by analyzing historical data on weather patterns and key economic
+indicators, focusing on regions most vulnerable to substantial losses. By estimating the economic
+damages caused by these events, the analysis hopes to provide actionable insights for policymakers
+and stakeholders, fostering better preparedness and enhancing economic resilience against future
+disasters.
+
+The project work is divided into 4 steps:
 
 1. **Data Collection**: Gathering relevant data from the NOAA Storm Events Database and BEA.
 2. **Data Analysis**: Initial analysis of the data to identify trends and patterns.
@@ -14,11 +24,11 @@ The project is divided into four main steps:
 ## Data Sources
 
 - **NOAA Storm Events Database**: Contains information on extreme weather events in the U.S.
-- **Bureau of Economic Analysis (BEA) - GDP by State**: Contains data on the GDP of individual U.S. states.
+- **Bureau of Economic Analysis (BEA) - GDP by State**: Contains data on the GDP of individual U.S. states and the U.S. overall.
 
 ## Project Goals
 
-- **Understanding Correlations**: Investigating correlations between extreme weather events and economic factors like real personal income and real PCE.
+- **Understanding potential Correlations**: Investigating correlations between extreme weather events and economic factors like real personal income and real PCE.
 - **Economic Impacts**: Determining the economic impact of extreme weather events on different states in the U.S.
 
 ## Data Structure
